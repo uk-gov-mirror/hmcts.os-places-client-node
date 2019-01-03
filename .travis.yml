@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+- node
+script:
+- yarn build
+- yarn lint
+- yarn coverage
+deploy:
+  provider: npm
+  email: jenkins-reform@hmcts.net
+  skip_cleanup: true
+  api_key:
+    secure: USJbGRkCnNTr0aHsZTc44QQjCan8GC5TpzsB4iWNQR2lle5rA1er8j3g6rnlFdhmWpzcp5G34sCN4Z54mm0rERrP2q6EtKhiMUOjQF133KFwGuNPMcQ+YRSfKPSI0cfX635I0304l1/jUNEsQtQrdsIeiqqQA1ZBQ7bNYzbzavQz2Q+vynbPa2iUWeYjQO4iY5Y5RogsrKoyVqa/DH8ra7KZv5RDRyOpemqUeEZPZt0HG3iyuvvvCRYmD68a39aGRD+ix2+Ci3N6y92k6W7ExdHL3Z/Wbldsjihoy1kvPP8M5mbjYO9xrPZzDRbZZxDSlTbqkO6jM5yGDc8p7iOAl4bJ1VW6AMptTPwo7FWV2OO5o6bN1dU1V7chqcffSJxONlARqAfpAOLpN95SF6NZzoeYSoS/7aCs25xi4NzLsKj5v7n6XJA2IjjdSgeO+4LtxhVkQbpwLE066YdxBV7hMRbEToRLQ1ZHKsTHhzyqk+YDNoadQKrOgAwQemAUk5zS6/bgyyj8bmHDwJ5ymjJGQ02Oi77dGaEwivw67/ZlJGei9QqLIyu/kOP7VYBDyRPGwH2aYayr1NKJ4aNZJjRAIf3Y9mEjxUVJ6fQ1D05CkumlGmHbbo0yOhSWfjGdD2dtpF9qEQbA6w0warYCYeMwifDJNlXeHj2Dd5KKOOz77jQ=
+  on:
+    tags: true
+    repo: hmcts/os-places-client-node
