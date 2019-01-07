@@ -2,7 +2,16 @@ import { Address } from './address'
 
 export class PostcodeInfoResponse {
 
-  constructor (public readonly valid: boolean,
-               public readonly addresses?: Address[]) {
+  public addresses: Address[] = [];
+
+  constructor (
+    public readonly statusCode: number,
+    public readonly valid: boolean
+  ) {
+
+  }
+
+  public addAll(moreAddresses: Address[]) {
+    this.addresses.push(...moreAddresses);
   }
 }
