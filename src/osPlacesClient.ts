@@ -18,8 +18,12 @@ export class OSPlacesClient {
       return Promise.reject(new Error('Missing required postcode'))
     }
 
-    const uri = `${this.apiUrl}/places/v1/addresses/postcode?offset=0&key=${this.apiToken}&postcode=${postcode}`
-    return this.getResponse(uri, new AddressInfoResponse(999, false))
+    const uri = this.getUri(postcode, 0)
+    return this.getResponse(uri, new AddressInfoResponse(999, [], false))
+  }
+
+  private getUri (postcode: string, offset: number): string {
+    return `${this.apiUrl}/places/v1/addresses/postcode?offset=${offset}&key=${this.apiToken}&postcode=${postcode}`
   }
 
   private getResponse (uri: string, addressInfoResponse: AddressInfoResponse): Promise<any> {
@@ -33,7 +37,7 @@ export class OSPlacesClient {
       if (response.statusCode >= 500) {
         throw new Error('Error with OS Places service')
       } else if (response.statusCode === 404) {
-        return new AddressInfoResponse(404, false)
+        return new AddressInfoResponse(404, [], false)
       } else if (response.statusCode === 401) {
         throw new Error('Authentication failed')
       }
@@ -53,39 +57,44 @@ export class OSPlacesClient {
       )
 
       if (addressInfoResponse.statusCode === 999) {
-        addressInfoResponse = new AddressInfoResponse(response.statusCode, response.statusCode === 200)
+        addressInfoResponse = new AddressInfoResponse(response.statusCode, [], response.statusCode === 200)
       }
 
-      addressInfoResponse.addAll(
-        placesQueryBody.results.map((jsonAddress: any) => {
-            return new Address(
-              jsonAddress.DPA.UPRN,                             // 1
-              jsonAddress.DPA.ORGANISATION_NAME,                // 0..1
-              jsonAddress.DPA.DEPARTMENT_NAME,                  // 0..1
-              jsonAddress.DPA.PO_BOX_NUMBER,                    // 0..1
-              jsonAddress.DPA.BUILDING_NAME,                    // 0..1
-              jsonAddress.DPA.SUB_BUILDING_NAME,                // 0..1
-              jsonAddress.DPA.BUILDING_NUMBER,                  // 0..1
-              jsonAddress.DPA.THOROUGHFARE_NAME,                // 0..1
-              jsonAddress.DPA.DEPENDENT_THOROUGHFARE_NAME,      // 0..1
-              jsonAddress.DPA.DEPENDENT_LOCALITY,               // 0..1
-              jsonAddress.DPA.DOUBLE_DEPENDENT_LOCALITY,        // 0..1
-              jsonAddress.DPA.POST_TOWN,                        // 1
-              jsonAddress.DPA.POSTCODE,                         // 1
-              jsonAddress.DPA.POSTAL_ADDRESS_CODE,              // 1
-              jsonAddress.DPA.ADDRESS,                          // 1
-              new Point('Point', [jsonAddress.DPA.X_COORDINATE, jsonAddress.DPA.Y_COORDINATE])
-            )
-          }
+      if (placesQueryBody.results) {
+        addressInfoResponse.addAll(
+          placesQueryBody.results.map((jsonAddress: any) => {
+              return new Address(
+                jsonAddress.DPA.UPRN,                             // 1
+                jsonAddress.DPA.ORGANISATION_NAME,                // 0..1
+                jsonAddress.DPA.DEPARTMENT_NAME,                  // 0..1
+                jsonAddress.DPA.PO_BOX_NUMBER,                    // 0..1
+                jsonAddress.DPA.BUILDING_NAME,                    // 0..1
+                jsonAddress.DPA.SUB_BUILDING_NAME,                // 0..1
+                jsonAddress.DPA.BUILDING_NUMBER,                  // 0..1
+                jsonAddress.DPA.THOROUGHFARE_NAME,                // 0..1
+                jsonAddress.DPA.DEPENDENT_THOROUGHFARE_NAME,      // 0..1
+                jsonAddress.DPA.DEPENDENT_LOCALITY,               // 0..1
+                jsonAddress.DPA.DOUBLE_DEPENDENT_LOCALITY,        // 0..1
+                jsonAddress.DPA.POST_TOWN,                        // 1
+                jsonAddress.DPA.POSTCODE,                         // 1
+                jsonAddress.DPA.POSTAL_ADDRESS_CODE,              // 1
+                jsonAddress.DPA.ADDRESS,                          // 1
+                new Point('Point', [jsonAddress.DPA.X_COORDINATE, jsonAddress.DPA.Y_COORDINATE])
+              )
+            }
+          )
         )
-      )
+      }
 
       if (header.hasNextPage()) {
-        const next = header.uri.replace(/offset=\d+/, 'offset=' + header.getNextOffset())
-        return this.getResponse(next, addressInfoResponse);
+        const next = this.getUri(addressInfoResponse.addresses[0].postcode, header.getNextOffset())
+        return this.getResponse(next, addressInfoResponse)
       }
 
-      return addressInfoResponse;
-    });
+      if (addressInfoResponse.addresses.length === 0) {
+        addressInfoResponse.isValid = false
+      }
+      return addressInfoResponse
+    })
   }
 }
