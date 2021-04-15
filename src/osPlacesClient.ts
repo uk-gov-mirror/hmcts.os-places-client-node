@@ -8,11 +8,11 @@ import { Point } from './point'
 export class OSPlacesClient {
 
   constructor (private readonly apiToken: string,
-    private readonly apiUrl: string = 'https://api.ordnancesurvey.co.uk',
-    private readonly apiPath: string = '/places/v1/addresses/postcode',
     private readonly request: requestDefault.RequestAPI<requestPromise.RequestPromise,
       requestPromise.RequestPromiseOptions,
       requestDefault.RequiredUriUrl> = requestPromise,
+    private readonly apiUrl: string = 'https://api.ordnancesurvey.co.uk',
+    private readonly apiPath: string = '/places/v1/addresses/postcode',
     ) {
   }
 

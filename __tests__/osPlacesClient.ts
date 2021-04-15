@@ -5,7 +5,7 @@ import * as request from 'request-promise-native'
 import { OSPlacesClient } from '../src'
 
 const mockServer = 'http://localhost'
-const osPlacesClient: OSPlacesClient = new OSPlacesClient('APIKEY', mockServer, '/places/v1/addresses/postcode', request)
+const osPlacesClient: OSPlacesClient = new OSPlacesClient('APIKEY', request, mockServer)
 
 describe('osPlacesClient lookupByPostcode', () => {
   test('should return valid false if no address found', () => {
