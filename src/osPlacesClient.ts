@@ -6,11 +6,14 @@ import { Header } from './header'
 import { Point } from './point'
 
 export class OSPlacesClient {
+
   constructor (private readonly apiToken: string,
-               private readonly request: requestDefault.RequestAPI<requestPromise.RequestPromise,
-                 requestPromise.RequestPromiseOptions,
-                 requestDefault.RequiredUriUrl> = requestPromise,
-               private readonly apiUrl: string = 'https://api.ordnancesurvey.co.uk') {
+    private readonly apiUrl: string = 'https://api.ordnancesurvey.co.uk',
+    private readonly apiPath: string = '/places/v1/addresses/postcode',
+    private readonly request: requestDefault.RequestAPI<requestPromise.RequestPromise,
+      requestPromise.RequestPromiseOptions,
+      requestDefault.RequiredUriUrl> = requestPromise,
+    ) {
   }
 
   public lookupByPostcode (postcode: string): Promise<AddressInfoResponse> {
@@ -23,7 +26,7 @@ export class OSPlacesClient {
   }
 
   private getUri (postcode: string, offset: number): string {
-    return `${this.apiUrl}/places/v1/addresses/postcode?offset=${offset}&key=${this.apiToken}&postcode=${postcode}`
+    return `${this.apiUrl}${this.apiPath}?offset=${offset}&key=${this.apiToken}&postcode=${postcode}`
   }
 
   private getResponse (uri: string, addressInfoResponse: AddressInfoResponse): Promise<any> {
