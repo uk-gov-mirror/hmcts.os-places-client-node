@@ -12,8 +12,7 @@ export class OSPlacesClient {
       requestPromise.RequestPromiseOptions,
       requestDefault.RequiredUriUrl> = requestPromise,
     private readonly apiUrl: string = 'https://api.ordnancesurvey.co.uk',
-    private readonly apiPath: string = '/places/v1/addresses/postcode',
-    ) {
+    private readonly apiPath: string = '/places/v1/addresses/postcode') {
   }
 
   public lookupByPostcode (postcode: string): Promise<AddressInfoResponse> {
