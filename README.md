@@ -42,3 +42,7 @@ const OSPlacesClient = require('@hmcts/os-places-client').OSPlacesClient
 
 new OSPlacesClient('<token here>').lookupByPostcode('SN15NB')
 ```
+
+## Version 1.1.0+
+Changing the api url to https://api.os.uk/search/places/v1/postcode
+You will need a new token when upgrading to version 1.1.0+ from version 1.0.6
