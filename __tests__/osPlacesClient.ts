@@ -10,7 +10,7 @@ const osPlacesClient: OSPlacesClient = new OSPlacesClient('APIKEY', request, moc
 describe('osPlacesClient lookupByPostcode', () => {
   test('should return valid false if no address found', () => {
       nock(mockServer)
-        .get(/\/places\/v1\/addresses\/postcode\?offset=.+&key=.+&postcode=.+/)
+        .get(/\/search\/places\/v1\/postcode\?offset=.+&key=.+&postcode=.+/)
         .reply(404, [])
 
       return osPlacesClient
@@ -23,13 +23,13 @@ describe('osPlacesClient lookupByPostcode', () => {
 
   test('should return found addresses', () => {
       nock(mockServer)
-        .get(/\/places\/v1\/addresses\/postcode\?offset=0&key=.+&postcode=.+/)
+        .get(/\/search\/places\/v1\/postcode\?offset=0&key=.+&postcode=.+/)
         .reply(200, fs.readFileSync(path.join(__dirname, 'mockLookupByPostcodeResponse_1.json')))
       nock(mockServer)
-        .get(/\/places\/v1\/addresses\/postcode\?offset=1&key=.+&postcode=.+/)
+        .get(/\/search\/places\/v1\/postcode\?offset=1&key=.+&postcode=.+/)
         .reply(200, fs.readFileSync(path.join(__dirname, 'mockLookupByPostcodeResponse_2.json')))
       nock(mockServer)
-        .get(/\/places\/v1\/addresses\/postcode\?offset=2&key=.+&postcode=.+/)
+        .get(/\/search\/places\/v1\/postcode\?offset=2&key=.+&postcode=.+/)
         .reply(200, fs.readFileSync(path.join(__dirname, 'mockLookupByPostcodeResponse_3.json')))
 
       return osPlacesClient.lookupByPostcode('1234')
