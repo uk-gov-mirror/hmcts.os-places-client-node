@@ -103,6 +103,88 @@ describe('osPlacesClient lookupByPostcode', () => {
     }
   )
 
+  test('should return found addresses with dpa', () => {
+    nock(mockServer)
+      .get(/\/search\/places\/v1\/postcode\?offset=0&key=.+&dataset=.+&postcode=.+/)
+      .reply(200, fs.readFileSync(path.join(__dirname, 'mockLookupByPostcodeResponse_1.json')))
+    nock(mockServer)
+      .get(/\/search\/places\/v1\/postcode\?offset=1&key=.+&dataset=.+&postcode=.+/)
+      .reply(200, fs.readFileSync(path.join(__dirname, 'mockLookupByPostcodeResponse_2.json')))
+    nock(mockServer)
+      .get(/\/search\/places\/v1\/postcode\?offset=2&key=.+&dataset=.+&postcode=.+/)
+      .reply(200, fs.readFileSync(path.join(__dirname, 'mockLookupByPostcodeResponse_3.json')))
+
+    return osPlacesClient.lookupByPostcode('1234')
+      .then(postcodeResponse => {
+        expect(postcodeResponse).toEqual(
+          {
+            addresses: [
+              {
+                buildingName: undefined,
+                buildingNumber: '1',
+                departmentName: undefined,
+                dependentLocality: '',
+                dependentThoroughfareName: undefined,
+                doubleDependentLocality: undefined,
+                formattedAddress: '1, THE ROAD, THE TOWN, 1234',
+                organisationName: undefined,
+                poBoxNumber: undefined,
+                point: { 'coordinates': [492237, 181505], 'type': 'Point' },
+                postTown: 'THE TOWN',
+                postcode: '1234',
+                postcodeType: 'D',
+                subBuildingName: undefined,
+                thoroughfareName: 'THE ROAD',
+                udprn: '22400864',
+                uprn: '100080489735'
+              },
+              {
+                buildingName: undefined,
+                buildingNumber: '2',
+                departmentName: undefined,
+                dependentLocality: '',
+                dependentThoroughfareName: undefined,
+                doubleDependentLocality: undefined,
+                formattedAddress: '2, THE ROAD, THE TOWN, 1234',
+                organisationName: undefined,
+                poBoxNumber: undefined,
+                point: { 'coordinates': [492237, 181505], 'type': 'Point' },
+                postTown: 'THE TOWN',
+                postcode: '1234',
+                postcodeType: 'D',
+                subBuildingName: undefined,
+                thoroughfareName: 'THE ROAD',
+                udprn: '22400864',
+                uprn: '100080489735'
+              },
+              {
+                buildingName: undefined,
+                buildingNumber: '3',
+                departmentName: undefined,
+                dependentLocality: '',
+                dependentThoroughfareName: undefined,
+                doubleDependentLocality: undefined,
+                formattedAddress: '3, THE ROAD, THE TOWN, 1234',
+                organisationName: undefined,
+                poBoxNumber: undefined,
+                point: { 'coordinates': [492237, 181505], 'type': 'Point' },
+                postTown: 'THE TOWN',
+                postcode: '1234',
+                postcodeType: 'D',
+                subBuildingName: undefined,
+                thoroughfareName: 'THE ROAD',
+                udprn: '22400864',
+                uprn: '100080489735'
+              }
+            ],
+            httpStatus: 200,
+            valid: true
+          }
+        )
+      })
+    }
+  )
+
   test('should reject promise if no postcode', () =>
     expect(osPlacesClient.lookupByPostcode('')).rejects.toEqual(new Error('Missing required postcode'))
   )
