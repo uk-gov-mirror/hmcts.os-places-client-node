@@ -1,0 +1,46 @@
+{
+  "header": {
+    "uri": "http://localhost/places/v1/addresses/postcode?offset=1&key=APIKEY&dataset=DPA,LPI&postcode=1234",
+    "query": "postcode=1234",
+    "offset": 1,
+    "totalresults": 3,
+    "format": "JSON",
+    "dataset": "DPA",
+    "lr": "EN,CY",
+    "maxresults": 1,
+    "epoch": "63",
+    "output_srs": "EPSG:27700"
+  },
+  "results": [
+    {
+      "DPA": {
+        "UPRN": "100080489735",
+        "UDPRN": "22400864",
+        "ADDRESS": "2, THE ROAD, THE TOWN, 1234",
+        "BUILDING_NUMBER": "2",
+        "THOROUGHFARE_NAME": "THE ROAD",
+        "DEPENDENT_LOCALITY": "",
+        "POST_TOWN": "THE TOWN",
+        "POSTCODE": "1234",
+        "RPC": "1",
+        "X_COORDINATE": 492237,
+        "Y_COORDINATE": 181505,
+        "STATUS": "APPROVED",
+        "LOGICAL_STATUS_CODE": "1",
+        "CLASSIFICATION_CODE": "RD04",
+        "CLASSIFICATION_CODE_DESCRIPTION": "Terraced",
+        "LOCAL_CUSTODIAN_CODE": 410,
+        "LOCAL_CUSTODIAN_CODE_DESCRIPTION": "SOUTH BUCKS",
+        "POSTAL_ADDRESS_CODE": "D",
+        "POSTAL_ADDRESS_CODE_DESCRIPTION": "A record which is linked to PAF",
+        "BLPU_STATE_CODE_DESCRIPTION": "Unknown/Not applicable",
+        "TOPOGRAPHY_LAYER_TOID": "osgb1000016563016",
+        "LAST_UPDATE_DATE": "10/02/2016",
+        "ENTRY_DATE": "02/10/2003",
+        "LANGUAGE": "EN",
+        "MATCH": 1,
+        "MATCH_DESCRIPTION": "EXACT"
+      }
+    }
+  ]
+}

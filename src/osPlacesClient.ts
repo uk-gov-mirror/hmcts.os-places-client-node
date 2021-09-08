@@ -20,12 +20,25 @@ export class OSPlacesClient {
       return Promise.reject(new Error('Missing required postcode'))
     }
 
-    const uri = this.getUri(postcode, 0)
+    const uri = this.getUri(postcode, 0, '')
     return this.getResponse(uri, new AddressInfoResponse(999, [], false))
   }
 
-  private getUri (postcode: string, offset: number): string {
-    return `${this.apiUrl}${this.apiPath}?offset=${offset}&key=${this.apiToken}&postcode=${postcode}`
+  public lookupByPostcodeAndDataSet (postcode: string, dataset: string): Promise<AddressInfoResponse> {
+    if (!postcode) {
+      return Promise.reject(new Error('Missing required postcode'))
+    }
+
+    const uri = this.getUri(postcode, 0, dataset)
+    return this.getResponse(uri, new AddressInfoResponse(999, [], false))
+  }
+
+  private getUri (postcode: string, offset: number, dataset: string): string {
+    if (!dataset) {
+      return `${this.apiUrl}${this.apiPath}?offset=${offset}&key=${this.apiToken}&postcode=${postcode}`
+    } else {
+      return `${this.apiUrl}${this.apiPath}?offset=${offset}&key=${this.apiToken}&dataset=${dataset}&postcode=${postcode}`
+    }
   }
 
   private getResponse (uri: string, addressInfoResponse: AddressInfoResponse): Promise<any> {
@@ -35,7 +48,6 @@ export class OSPlacesClient {
       simple: false,
       uri: `${uri}`
     }).then((response) => {
-
       if (response.statusCode >= 500) {
         throw new Error('Error with OS Places service')
       } else if (response.statusCode === 404) {
@@ -90,7 +102,7 @@ export class OSPlacesClient {
       }
 
       if (header.hasNextPage()) {
-        const next = this.getUri(addressInfoResponse.addresses[0].postcode, header.getNextOffset())
+        const next = this.getUri(addressInfoResponse.addresses[0].postcode, header.getNextOffset(), header.dataset)
         return this.getResponse(next, addressInfoResponse)
       }
 
