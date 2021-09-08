@@ -106,15 +106,15 @@ describe('osPlacesClient lookupByPostcode', () => {
   test('should return found addresses with dpa', () => {
     nock(mockServer)
       .get(/\/search\/places\/v1\/postcode\?offset=0&key=.+&dataset=.+&postcode=.+/)
-      .reply(200, fs.readFileSync(path.join(__dirname, 'mockLookupByPostcodeResponse_1.json')))
+      .reply(200, fs.readFileSync(path.join(__dirname, 'mockLookupByPostcodeResponse_4.json')))
     nock(mockServer)
       .get(/\/search\/places\/v1\/postcode\?offset=1&key=.+&dataset=.+&postcode=.+/)
-      .reply(200, fs.readFileSync(path.join(__dirname, 'mockLookupByPostcodeResponse_2.json')))
+      .reply(200, fs.readFileSync(path.join(__dirname, 'mockLookupByPostcodeResponse_5.json')))
     nock(mockServer)
       .get(/\/search\/places\/v1\/postcode\?offset=2&key=.+&dataset=.+&postcode=.+/)
-      .reply(200, fs.readFileSync(path.join(__dirname, 'mockLookupByPostcodeResponse_3.json')))
+      .reply(200, fs.readFileSync(path.join(__dirname, 'mockLookupByPostcodeResponse_6.json')))
 
-    return osPlacesClient.lookupByPostcode('1234')
+    return osPlacesClient.lookupByPostcodeAndDataSet('1234', 'DPA,LPI')
       .then(postcodeResponse => {
         expect(postcodeResponse).toEqual(
           {
