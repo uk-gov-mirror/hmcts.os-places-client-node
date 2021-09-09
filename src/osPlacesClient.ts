@@ -77,6 +77,27 @@ export class OSPlacesClient {
       if (placesQueryBody.results) {
         addressInfoResponse.addAll(
           placesQueryBody.results.map((jsonAddress: any) => {
+            if (!jsonAddress.DPA) {
+              return new Address(
+                jsonAddress.LPI.UPRN,                             // 1
+                jsonAddress.LPI.ORGANISATION_NAME,                // 0..1
+                jsonAddress.LPI.DEPARTMENT_NAME,                  // 0..1
+                jsonAddress.LPI.PO_BOX_NUMBER,                    // 0..1
+                jsonAddress.LPI.BUILDING_NAME,                    // 0..1
+                jsonAddress.LPI.SUB_BUILDING_NAME,                // 0..1
+                jsonAddress.LPI.BUILDING_NUMBER,                  // 0..1
+                jsonAddress.LPI.THOROUGHFARE_NAME,                // 0..1
+                jsonAddress.LPI.DEPENDENT_THOROUGHFARE_NAME,      // 0..1
+                jsonAddress.LPI.DEPENDENT_LOCALITY,               // 0..1
+                jsonAddress.LPI.DOUBLE_DEPENDENT_LOCALITY,        // 0..1
+                jsonAddress.LPI.POST_TOWN,                        // 1
+                jsonAddress.LPI.POSTCODE,                         // 1
+                jsonAddress.LPI.POSTAL_ADDRESS_CODE,              // 1
+                jsonAddress.LPI.ADDRESS,                          // 1
+                new Point('Point', [jsonAddress.LPI.X_COORDINATE, jsonAddress.LPI.Y_COORDINATE]),
+                jsonAddress.LPI.UDPRN
+              )
+            } else {
               return new Address(
                 jsonAddress.DPA.UPRN,                             // 1
                 jsonAddress.DPA.ORGANISATION_NAME,                // 0..1
@@ -97,9 +118,9 @@ export class OSPlacesClient {
                 jsonAddress.DPA.UDPRN
               )
             }
-          )
+          }
         )
-      }
+      )}
 
       if (header.hasNextPage()) {
         const next = this.getUri(addressInfoResponse.addresses[0].postcode, header.getNextOffset(), header.dataset)
