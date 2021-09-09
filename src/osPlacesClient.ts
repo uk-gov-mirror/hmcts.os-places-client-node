@@ -83,19 +83,19 @@ export class OSPlacesClient {
                 jsonAddress.LPI.ORGANISATION_NAME,                // 0..1
                 jsonAddress.LPI.DEPARTMENT_NAME,                  // 0..1
                 jsonAddress.LPI.PO_BOX_NUMBER,                    // 0..1
-                jsonAddress.LPI.BUILDING_NAME,                    // 0..1
-                jsonAddress.LPI.SUB_BUILDING_NAME,                // 0..1
+                jsonAddress.LPI.PAO_TEXT,                         // 0..1
+                jsonAddress.LPI.SAO_TEXT,                         // 0..1
                 jsonAddress.LPI.BUILDING_NUMBER,                  // 0..1
-                jsonAddress.LPI.THOROUGHFARE_NAME,                // 0..1
+                jsonAddress.LPI.STREET_DESCRIPTION,               // 0..1
                 jsonAddress.LPI.DEPENDENT_THOROUGHFARE_NAME,      // 0..1
                 jsonAddress.LPI.DEPENDENT_LOCALITY,               // 0..1
                 jsonAddress.LPI.DOUBLE_DEPENDENT_LOCALITY,        // 0..1
-                jsonAddress.LPI.POST_TOWN,                        // 1
-                jsonAddress.LPI.POSTCODE,                         // 1
+                jsonAddress.LPI.TOWN_NAME,                        // 1
+                jsonAddress.LPI.POSTCODE_LOCATOR,                 // 1
                 jsonAddress.LPI.POSTAL_ADDRESS_CODE,              // 1
                 jsonAddress.LPI.ADDRESS,                          // 1
                 new Point('Point', [jsonAddress.LPI.X_COORDINATE, jsonAddress.LPI.Y_COORDINATE]),
-                jsonAddress.LPI.UDPRN
+                jsonAddress.LPI.USRN
               )
             } else {
               return new Address(
