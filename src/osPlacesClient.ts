@@ -80,7 +80,7 @@ export class OSPlacesClient {
             if (!jsonAddress.DPA) {
               return new Address(
                 jsonAddress.LPI.UPRN,                             // 1
-                jsonAddress.LPI.ORGANISATION_NAME,                // 0..1
+                jsonAddress.LPI.ORGANISATION,                     // 0..1
                 jsonAddress.LPI.DEPARTMENT_NAME,                  // 0..1
                 jsonAddress.LPI.PO_BOX_NUMBER,                    // 0..1
                 jsonAddress.LPI.PAO_TEXT,                         // 0..1
